@@ -1,0 +1,7 @@
+node_modules
+node_modules/
+migrations/
+.keystone/admin
+keystone.db
+.env
+*.log
