@@ -12,7 +12,7 @@ generator client {
 }
 
 model User {
-  id       String @id @default(cuid())
+  id       Int    @id @default(autoincrement())
   name     String @default("")
   email    String @unique @default("")
   password String
@@ -20,20 +20,20 @@ model User {
 }
 
 model Post {
-  id          String    @id @default(cuid())
+  id          Int       @id @default(autoincrement())
   title       String    @default("")
   status      String?   @default("draft")
   content     Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   publishDate DateTime?
   author      User?     @relation("Post_author", fields: [authorId], references: [id])
-  authorId    String?   @map("author")
+  authorId    Int?      @map("author")
   tags        Tag[]     @relation("Post_tags")
 
   @@index([authorId])
 }
 
 model Tag {
-  id    String @id @default(cuid())
+  id    Int    @id @default(autoincrement())
   name  String @default("")
   posts Post[] @relation("Post_tags")
 }

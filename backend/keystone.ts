@@ -23,6 +23,7 @@ export default withAuth(
       url: 'postgres://postgres:rt61278@localhost:5432/profi',
       enableLogging: true,
       useMigrations: true,
+      idField: { kind: 'autoincrement'}
     },
     // This config allows us to set up features of the Admin UI https://keystonejs.com/docs/apis/config#ui
     ui: {

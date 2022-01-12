@@ -22,7 +22,7 @@ if (!sessionSecret) {
       'The SESSION_SECRET environment variable must be set in production'
     );
   } else {
-    sessionSecret = 'dev-4353';
+    sessionSecret = 'tftrPokijjugytgtfrt-ji86ggEcfvthh59ioh9u4ujPoolweews4353';
   }
 }
 
