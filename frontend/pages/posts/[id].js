@@ -1,9 +1,12 @@
 import { gql } from "@apollo/client"
 import client from "../../helpers/apollo-client"
 
-export default function Post(){
+export default function Post({data}){
     return (
-        <div>Here will be a single post</div>
+        <div>
+            {data.title}
+        </div>
+
     )
 }
 
@@ -25,4 +28,22 @@ export async function getStaticPaths(){
     }))
 
     return {paths, fallback: false}
+}
+
+export async function getStaticProps({ params }) {
+    const { id } = params
+    const { data } = await client.query({
+        query: gql`query {
+                    post(where: {id: ${id}}) {
+                        title
+                    }
+                }`
+    })
+
+    return {
+        props: {
+            data: data.post,
+        },
+    };
+
 }
