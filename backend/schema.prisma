@@ -12,11 +12,40 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String @default("")
-  email    String @unique @default("")
+  id       Int       @id @default(autoincrement())
+  name     String    @default("")
+  email    String    @unique @default("")
+  admin    Boolean   @default(false)
   password String
-  posts    Post[] @relation("Post_author")
+  requests Request[] @relation("Request_owner")
+  posts    Post[]    @relation("Post_author")
+}
+
+model Request {
+  id          Int       @id @default(autoincrement())
+  title       String    @default("")
+  content     Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  publishDate DateTime?
+  owner       User?     @relation("Request_owner", fields: [ownerId], references: [id])
+  ownerId     Int?      @map("owner")
+
+  @@index([ownerId])
+}
+
+model Specialist {
+  id               Int          @id @default(autoincrement())
+  name             String       @default("")
+  email            String       @unique @default("")
+  about            Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  registrationDate DateTime?
+  password         String
+  departments      Department[] @relation("Department_specialists")
+}
+
+model Department {
+  id          Int          @id @default(autoincrement())
+  name        String       @default("")
+  specialists Specialist[] @relation("Department_specialists")
 }
 
 model Post {
