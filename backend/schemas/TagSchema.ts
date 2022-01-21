@@ -1,9 +1,5 @@
 import { list } from '@keystone-6/core';
-
-import {
-    text,
-    relationship,
-} from '@keystone-6/core/fields';
+import { text, relationship } from '@keystone-6/core/fields';
 
 export const Tag = list({
     ui: {

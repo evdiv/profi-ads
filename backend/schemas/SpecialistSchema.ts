@@ -1,17 +1,10 @@
 import { list } from '@keystone-6/core';
-
-import { text, relationship, password, timestamp,} from '@keystone-6/core/fields';
+import { relationship, text, timestamp,} from '@keystone-6/core/fields';
 import { document } from '@keystone-6/fields-document';
 
 export const Specialist = list({
     fields: {
-        name: text({ validation: { isRequired: true } }),
-        email: text({
-            validation: { isRequired: true },
-            isIndexed: 'unique',
-            isFilterable: true,
-        }),
-
+        title: text({ validation: { isRequired: true }}),
         about: document({
             formatting: true,
             layouts: [
@@ -23,9 +16,7 @@ export const Specialist = list({
             ],
             dividers: true,
         }),
-        registrationDate: timestamp(),
-
-        password: password({ validation: { isRequired: true } }),
+        user: relationship({ ref: 'User.occupation' }),
         departments: relationship({
             ref: 'Department.specialists',
             ui: {
@@ -37,11 +28,12 @@ export const Specialist = list({
             },
             many: true,
         }),
+        dateAdded: timestamp(),
     },
 
     ui: {
         listView: {
-            initialColumns: ['name', 'departments'],
+            initialColumns: ['user', 'departments'],
         },
     },
 }) 

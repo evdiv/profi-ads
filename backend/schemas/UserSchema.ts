@@ -1,11 +1,5 @@
 import { list } from '@keystone-6/core';
-
-import {
-    text,
-    relationship,
-    password,
-    checkbox,
-} from '@keystone-6/core/fields';
+import { text, relationship, password, checkbox } from '@keystone-6/core/fields';
 
 export const User = list({
     fields: {
@@ -20,6 +14,7 @@ export const User = list({
         password: password({ validation: { isRequired: true } }),
         requests: relationship({ ref: 'Request.owner', many: true }),
         posts: relationship({ ref: 'Post.author', many: true }),
+        occupation: relationship({ ref: 'Specialist.user'})
     },
 
     ui: {

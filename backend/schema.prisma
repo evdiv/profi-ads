@@ -12,13 +12,14 @@ generator client {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  name     String    @default("")
-  email    String    @unique @default("")
-  admin    Boolean   @default(false)
-  password String
-  requests Request[] @relation("Request_owner")
-  posts    Post[]    @relation("Post_author")
+  id         Int         @id @default(autoincrement())
+  name       String      @default("")
+  email      String      @unique @default("")
+  admin      Boolean     @default(false)
+  password   String
+  requests   Request[]   @relation("Request_owner")
+  posts      Post[]      @relation("Post_author")
+  occupation Specialist? @relation("Specialist_user")
 }
 
 model Request {
@@ -33,13 +34,13 @@ model Request {
 }
 
 model Specialist {
-  id               Int          @id @default(autoincrement())
-  name             String       @default("")
-  email            String       @unique @default("")
-  about            Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  registrationDate DateTime?
-  password         String
-  departments      Department[] @relation("Department_specialists")
+  id          Int          @id @default(autoincrement())
+  title       String       @default("")
+  about       Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  user        User?        @relation("Specialist_user", fields: [userId], references: [id])
+  userId      Int?         @unique @map("user")
+  departments Department[] @relation("Department_specialists")
+  dateAdded   DateTime?
 }
 
 model Department {

@@ -1,5 +1,4 @@
 import { list } from '@keystone-6/core';
-
 import { text, relationship } from '@keystone-6/core/fields';
 
 export const Department = list({

@@ -1,11 +1,5 @@
 import { list } from '@keystone-6/core';
-
-import {
-    text,
-    relationship,
-    timestamp,
-    select,
-} from '@keystone-6/core/fields';
+import { text, relationship, timestamp, select } from '@keystone-6/core/fields';
 
 import { document } from '@keystone-6/fields-document';
 
