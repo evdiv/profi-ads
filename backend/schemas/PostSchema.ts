@@ -1,9 +1,16 @@
 import { list } from '@keystone-6/core';
 import { text, relationship, timestamp, select } from '@keystone-6/core/fields';
-
 import { document } from '@keystone-6/fields-document';
+import { isAdmin } from '../access'
 
 export const Post = list({
+    access: {
+        operation: {
+            create: isAdmin,
+            update: isAdmin,
+            delete: isAdmin,
+        }
+    },
     fields: {
         title: text(),
         status: select({
