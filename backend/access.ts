@@ -11,7 +11,7 @@ type SessionContext = {
     };
 };
 
-type ItemContext = { item: any; } & SessionContext
+type ItemContext = { item: any } & SessionContext
 
 export const isSignedIn = ({ session }: SessionContext) => {
     return !!session
@@ -30,11 +30,11 @@ export const isProfi = ({ session }: SessionContext) => {
 };
 
 export const isJobOwner = ({ session, item }: ItemContext) => {
-    return session?.itemId === item.owner.id.toString()
+    return session?.itemId === item.userId.toString()
 };
 
 export const isCurrentSpecialist = ({ session, item }: ItemContext) => {
-    return session?.itemId === item.user.id.toString()
+    return session?.itemId === item.userId.toString()
 };
 
 export const rules = {

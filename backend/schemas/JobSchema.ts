@@ -1,21 +1,21 @@
 import { list } from '@keystone-6/core'
-import { relationship, text} from '@keystone-6/core/fields'
+import {text, relationship, timestamp,} from '@keystone-6/core/fields'
 import { document } from '@keystone-6/fields-document'
 import { isSignedIn, rules } from '../access'
+import { getCurrentTimeStamp } from '../utils/time'
 
-
-export const Specialist = list({
+export const Job = list({
     access: {
         item: {
             create: isSignedIn,
-            update: rules.canManageSpecialist,
-            delete: rules.canManageSpecialist
+            update: rules.canManageJob,
+            delete: rules.canManageJob
         },
     },
-
     fields: {
-        title: text({ validation: { isRequired: true }}),
-        about: document({
+        title: text({ validation: { isRequired: true } }),
+
+        content: document({
             formatting: true,
             layouts: [
                 [1, 1],
@@ -24,11 +24,18 @@ export const Specialist = list({
                 [1, 2],
                 [1, 2, 1],
             ],
+            links: true,
             dividers: true,
         }),
 
-        user: relationship({ 
-            ref: 'User.occupation', 
+        publishedDate: timestamp({
+            hooks: {
+                resolveInput: getCurrentTimeStamp
+            }
+        }),    
+
+        user: relationship({
+            ref: 'User.jobs',
             many: false,
             hooks: {
                 resolveInput: ({ context, resolvedData }) => {
@@ -40,23 +47,5 @@ export const Specialist = list({
                 }
             },
         }),
-
-        departments: relationship({
-            ref: 'Department.specialists',
-            ui: {
-                displayMode: 'cards',
-                cardFields: ['name'],
-                inlineEdit: { fields: ['name'] },
-                linkToItem: true,
-                inlineConnect: true
-            },
-            many: true,
-        }),
-    },
-
-    ui: {
-        listView: {
-            initialColumns: ['user', 'departments'],
-        },
     },
 }) 

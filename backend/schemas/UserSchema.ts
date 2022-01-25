@@ -1,6 +1,7 @@
 import { list } from '@keystone-6/core'
-import { text, relationship, password, checkbox } from '@keystone-6/core/fields'
+import { text, relationship, password, checkbox, timestamp } from '@keystone-6/core/fields'
 import { isAdmin, isCurrentUser, rules } from '../access'
+import { getCurrentTimeStamp } from '../utils/time'
 
 export const User = list({
     access: {
@@ -34,14 +35,32 @@ export const User = list({
                 update: isCurrentUser,
             }
         }),
-        requests: relationship({ ref: 'Request.owner', many: true }),
-        posts: relationship({ ref: 'Post.author', many: true }),
-        occupation: relationship({ ref: 'Specialist.user'})
+
+        publishedDate: timestamp({
+            hooks: {
+                resolveInput: getCurrentTimeStamp
+            }
+        }),
+
+        posts: relationship({ 
+            ref: 'Post.author', 
+            many: true 
+        }),
+
+        occupation: relationship({ 
+            ref: 'Specialist.user',
+            many: false,
+        }),
+
+        jobs: relationship({
+            ref: 'Job.user',
+            many: true,
+        })
     },
 
     ui: {
         listView: {
-            initialColumns: ['name', 'requests', 'occupation'],
+            initialColumns: ['name', 'occupation'],
         },
     },
 }) 

@@ -1,5 +1,5 @@
-import { list } from '@keystone-6/core';
-import { text, relationship } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core'
+import { text, relationship } from '@keystone-6/core/fields'
 import { isAdmin } from '../access'
 
 export const Department = list({

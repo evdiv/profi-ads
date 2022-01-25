@@ -7,13 +7,7 @@ type User {
   email: String
   admin: Boolean
   password: PasswordState
-  requests(
-    where: RequestWhereInput! = {}
-    orderBy: [RequestOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Request!]
-  requestsCount(where: RequestWhereInput! = {}): Int
+  publishedDate: DateTime
   posts(
     where: PostWhereInput! = {}
     orderBy: [PostOrderByInput!]! = []
@@ -22,6 +16,13 @@ type User {
   ): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
   occupation: Specialist
+  jobs(
+    where: JobWhereInput! = {}
+    orderBy: [JobOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Job!]
+  jobsCount(where: JobWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -47,9 +48,10 @@ input UserWhereInput {
   name: StringFilter
   email: StringFilter
   admin: BooleanFilter
-  requests: RequestManyRelationFilter
+  publishedDate: DateTimeNullableFilter
   posts: PostManyRelationFilter
   occupation: SpecialistWhereInput
+  jobs: JobManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -105,22 +107,6 @@ input BooleanFilter {
   not: BooleanFilter
 }
 
-input RequestManyRelationFilter {
-  every: RequestWhereInput
-  some: RequestWhereInput
-  none: RequestWhereInput
-}
-
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
-}
-
-input PasswordFilter {
-  isSet: Boolean!
-}
-
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -132,11 +118,28 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
+input PostManyRelationFilter {
+  every: PostWhereInput
+  some: PostWhereInput
+  none: PostWhereInput
+}
+
+input JobManyRelationFilter {
+  every: JobWhereInput
+  some: JobWhereInput
+  none: JobWhereInput
+}
+
+input PasswordFilter {
+  isSet: Boolean!
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
   admin: OrderDirection
+  publishedDate: OrderDirection
   passwordResetIssuedAt: OrderDirection
   passwordResetRedeemedAt: OrderDirection
 }
@@ -151,19 +154,13 @@ input UserUpdateInput {
   email: String
   admin: Boolean
   password: String
-  requests: RequestRelateToManyForUpdateInput
+  publishedDate: DateTime
   posts: PostRelateToManyForUpdateInput
   occupation: SpecialistRelateToOneForUpdateInput
+  jobs: JobRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
-}
-
-input RequestRelateToManyForUpdateInput {
-  disconnect: [RequestWhereUniqueInput!]
-  set: [RequestWhereUniqueInput!]
-  create: [RequestCreateInput!]
-  connect: [RequestWhereUniqueInput!]
 }
 
 input PostRelateToManyForUpdateInput {
@@ -179,6 +176,13 @@ input SpecialistRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input JobRelateToManyForUpdateInput {
+  disconnect: [JobWhereUniqueInput!]
+  set: [JobWhereUniqueInput!]
+  create: [JobCreateInput!]
+  connect: [JobWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -189,17 +193,13 @@ input UserCreateInput {
   email: String
   admin: Boolean
   password: String
-  requests: RequestRelateToManyForCreateInput
+  publishedDate: DateTime
   posts: PostRelateToManyForCreateInput
   occupation: SpecialistRelateToOneForCreateInput
+  jobs: JobRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
-}
-
-input RequestRelateToManyForCreateInput {
-  create: [RequestCreateInput!]
-  connect: [RequestWhereUniqueInput!]
 }
 
 input PostRelateToManyForCreateInput {
@@ -212,43 +212,48 @@ input SpecialistRelateToOneForCreateInput {
   connect: SpecialistWhereUniqueInput
 }
 
-type Request {
-  id: ID!
-  title: String
-  content: Request_content_Document
-  publishDate: DateTime
-  owner: User
+input JobRelateToManyForCreateInput {
+  create: [JobCreateInput!]
+  connect: [JobWhereUniqueInput!]
 }
 
-type Request_content_Document {
+type Job {
+  id: ID!
+  title: String
+  content: Job_content_Document
+  publishedDate: DateTime
+  user: User
+}
+
+type Job_content_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-input RequestWhereUniqueInput {
+input JobWhereUniqueInput {
   id: ID
 }
 
-input RequestWhereInput {
-  AND: [RequestWhereInput!]
-  OR: [RequestWhereInput!]
-  NOT: [RequestWhereInput!]
+input JobWhereInput {
+  AND: [JobWhereInput!]
+  OR: [JobWhereInput!]
+  NOT: [JobWhereInput!]
   id: IDFilter
   title: StringFilter
-  publishDate: DateTimeNullableFilter
-  owner: UserWhereInput
+  publishedDate: DateTimeNullableFilter
+  user: UserWhereInput
 }
 
-input RequestOrderByInput {
+input JobOrderByInput {
   id: OrderDirection
   title: OrderDirection
-  publishDate: OrderDirection
+  publishedDate: OrderDirection
 }
 
-input RequestUpdateInput {
+input JobUpdateInput {
   title: String
   content: JSON
-  publishDate: DateTime
-  owner: UserRelateToOneForUpdateInput
+  publishedDate: DateTime
+  user: UserRelateToOneForUpdateInput
 }
 
 input UserRelateToOneForUpdateInput {
@@ -257,16 +262,16 @@ input UserRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input RequestUpdateArgs {
-  where: RequestWhereUniqueInput!
-  data: RequestUpdateInput!
+input JobUpdateArgs {
+  where: JobWhereUniqueInput!
+  data: JobUpdateInput!
 }
 
-input RequestCreateInput {
+input JobCreateInput {
   title: String
   content: JSON
-  publishDate: DateTime
-  owner: UserRelateToOneForCreateInput
+  publishedDate: DateTime
+  user: UserRelateToOneForCreateInput
 }
 
 input UserRelateToOneForCreateInput {
@@ -286,7 +291,6 @@ type Specialist {
     skip: Int! = 0
   ): [Department!]
   departmentsCount(where: DepartmentWhereInput! = {}): Int
-  dateAdded: DateTime
 }
 
 type Specialist_about_Document {
@@ -305,7 +309,6 @@ input SpecialistWhereInput {
   title: StringFilter
   user: UserWhereInput
   departments: DepartmentManyRelationFilter
-  dateAdded: DateTimeNullableFilter
 }
 
 input DepartmentManyRelationFilter {
@@ -317,7 +320,6 @@ input DepartmentManyRelationFilter {
 input SpecialistOrderByInput {
   id: OrderDirection
   title: OrderDirection
-  dateAdded: OrderDirection
 }
 
 input SpecialistUpdateInput {
@@ -325,7 +327,6 @@ input SpecialistUpdateInput {
   about: JSON
   user: UserRelateToOneForUpdateInput
   departments: DepartmentRelateToManyForUpdateInput
-  dateAdded: DateTime
 }
 
 input DepartmentRelateToManyForUpdateInput {
@@ -345,7 +346,6 @@ input SpecialistCreateInput {
   about: JSON
   user: UserRelateToOneForCreateInput
   departments: DepartmentRelateToManyForCreateInput
-  dateAdded: DateTime
 }
 
 input DepartmentRelateToManyForCreateInput {
@@ -589,15 +589,12 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createRequest(data: RequestCreateInput!): Request
-  createRequests(data: [RequestCreateInput!]!): [Request]
-  updateRequest(
-    where: RequestWhereUniqueInput!
-    data: RequestUpdateInput!
-  ): Request
-  updateRequests(data: [RequestUpdateArgs!]!): [Request]
-  deleteRequest(where: RequestWhereUniqueInput!): Request
-  deleteRequests(where: [RequestWhereUniqueInput!]!): [Request]
+  createJob(data: JobCreateInput!): Job
+  createJobs(data: [JobCreateInput!]!): [Job]
+  updateJob(where: JobWhereUniqueInput!, data: JobUpdateInput!): Job
+  updateJobs(data: [JobUpdateArgs!]!): [Job]
+  deleteJob(where: JobWhereUniqueInput!): Job
+  deleteJobs(where: [JobWhereUniqueInput!]!): [Job]
   createSpecialist(data: SpecialistCreateInput!): Specialist
   createSpecialists(data: [SpecialistCreateInput!]!): [Specialist]
   updateSpecialist(
@@ -683,14 +680,14 @@ type Query {
   ): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  requests(
-    where: RequestWhereInput! = {}
-    orderBy: [RequestOrderByInput!]! = []
+  jobs(
+    where: JobWhereInput! = {}
+    orderBy: [JobOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Request!]
-  request(where: RequestWhereUniqueInput!): Request
-  requestsCount(where: RequestWhereInput! = {}): Int
+  ): [Job!]
+  job(where: JobWhereUniqueInput!): Job
+  jobsCount(where: JobWhereInput! = {}): Int
   specialists(
     where: SpecialistWhereInput! = {}
     orderBy: [SpecialistOrderByInput!]! = []
