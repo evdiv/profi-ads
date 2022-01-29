@@ -18,8 +18,14 @@ export default withAuth(
     },
     // Allow AdminUI only for admins
     ui: {
-		//isAccessAllowed: isAdmin
+		  isAccessAllowed: isAdmin
     },
+	  server: {
+		  cors: {
+			  origin: [process.env.FRONTEND_URL || 'http://localhost:3001'],
+			  credentials: true,
+		  },
+	  },
     lists,
     session,
   	})

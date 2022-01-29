@@ -47,5 +47,17 @@ export const Job = list({
                 }
             },
         }),
+        
+        departments: relationship({
+            ref: 'Department.jobs',
+            ui: {
+                displayMode: 'cards',
+                cardFields: ['name'],
+                linkToItem: true,
+                inlineConnect: true
+            },
+            many: true,
+        }),
+
     },
 }) 

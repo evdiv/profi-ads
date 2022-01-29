@@ -46,7 +46,6 @@ export const Specialist = list({
             ui: {
                 displayMode: 'cards',
                 cardFields: ['name'],
-                inlineEdit: { fields: ['name'] },
                 linkToItem: true,
                 inlineConnect: true
             },

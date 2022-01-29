@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import client from "../helpers/apollo-client";
 import Link from "next/link";
 
-export default function Home({ data }) {
+export default ({ data }) => {
   	return (
 		<div>
 			Main Page
@@ -18,7 +18,7 @@ export default function Home({ data }) {
 }
 
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
 	const { data } = await client.query({
 		query: gql`
 			query {

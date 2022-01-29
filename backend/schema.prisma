@@ -27,12 +27,13 @@ model User {
 }
 
 model Job {
-  id            Int       @id @default(autoincrement())
-  title         String    @default("")
-  content       Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  id            Int          @id @default(autoincrement())
+  title         String       @default("")
+  content       Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   publishedDate DateTime?
-  user          User?     @relation("Job_user", fields: [userId], references: [id])
-  userId        Int?      @map("user")
+  user          User?        @relation("Job_user", fields: [userId], references: [id])
+  userId        Int?         @map("user")
+  departments   Department[] @relation("Department_jobs")
 
   @@index([userId])
 }
@@ -50,6 +51,7 @@ model Department {
   id          Int          @id @default(autoincrement())
   name        String       @default("")
   specialists Specialist[] @relation("Department_specialists")
+  jobs        Job[]        @relation("Department_jobs")
 }
 
 model Post {

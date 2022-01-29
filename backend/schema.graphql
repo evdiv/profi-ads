@@ -223,6 +223,13 @@ type Job {
   content: Job_content_Document
   publishedDate: DateTime
   user: User
+  departments(
+    where: DepartmentWhereInput! = {}
+    orderBy: [DepartmentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Department!]
+  departmentsCount(where: DepartmentWhereInput! = {}): Int
 }
 
 type Job_content_Document {
@@ -241,6 +248,13 @@ input JobWhereInput {
   title: StringFilter
   publishedDate: DateTimeNullableFilter
   user: UserWhereInput
+  departments: DepartmentManyRelationFilter
+}
+
+input DepartmentManyRelationFilter {
+  every: DepartmentWhereInput
+  some: DepartmentWhereInput
+  none: DepartmentWhereInput
 }
 
 input JobOrderByInput {
@@ -254,12 +268,20 @@ input JobUpdateInput {
   content: JSON
   publishedDate: DateTime
   user: UserRelateToOneForUpdateInput
+  departments: DepartmentRelateToManyForUpdateInput
 }
 
 input UserRelateToOneForUpdateInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
   disconnect: Boolean
+}
+
+input DepartmentRelateToManyForUpdateInput {
+  disconnect: [DepartmentWhereUniqueInput!]
+  set: [DepartmentWhereUniqueInput!]
+  create: [DepartmentCreateInput!]
+  connect: [DepartmentWhereUniqueInput!]
 }
 
 input JobUpdateArgs {
@@ -272,11 +294,17 @@ input JobCreateInput {
   content: JSON
   publishedDate: DateTime
   user: UserRelateToOneForCreateInput
+  departments: DepartmentRelateToManyForCreateInput
 }
 
 input UserRelateToOneForCreateInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
+}
+
+input DepartmentRelateToManyForCreateInput {
+  create: [DepartmentCreateInput!]
+  connect: [DepartmentWhereUniqueInput!]
 }
 
 type Specialist {
@@ -311,12 +339,6 @@ input SpecialistWhereInput {
   departments: DepartmentManyRelationFilter
 }
 
-input DepartmentManyRelationFilter {
-  every: DepartmentWhereInput
-  some: DepartmentWhereInput
-  none: DepartmentWhereInput
-}
-
 input SpecialistOrderByInput {
   id: OrderDirection
   title: OrderDirection
@@ -327,13 +349,6 @@ input SpecialistUpdateInput {
   about: JSON
   user: UserRelateToOneForUpdateInput
   departments: DepartmentRelateToManyForUpdateInput
-}
-
-input DepartmentRelateToManyForUpdateInput {
-  disconnect: [DepartmentWhereUniqueInput!]
-  set: [DepartmentWhereUniqueInput!]
-  create: [DepartmentCreateInput!]
-  connect: [DepartmentWhereUniqueInput!]
 }
 
 input SpecialistUpdateArgs {
@@ -348,11 +363,6 @@ input SpecialistCreateInput {
   departments: DepartmentRelateToManyForCreateInput
 }
 
-input DepartmentRelateToManyForCreateInput {
-  create: [DepartmentCreateInput!]
-  connect: [DepartmentWhereUniqueInput!]
-}
-
 type Department {
   id: ID!
   name: String
@@ -363,6 +373,13 @@ type Department {
     skip: Int! = 0
   ): [Specialist!]
   specialistsCount(where: SpecialistWhereInput! = {}): Int
+  jobs(
+    where: JobWhereInput! = {}
+    orderBy: [JobOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Job!]
+  jobsCount(where: JobWhereInput! = {}): Int
 }
 
 input DepartmentWhereUniqueInput {
@@ -376,6 +393,7 @@ input DepartmentWhereInput {
   id: IDFilter
   name: StringFilter
   specialists: SpecialistManyRelationFilter
+  jobs: JobManyRelationFilter
 }
 
 input SpecialistManyRelationFilter {
@@ -392,6 +410,7 @@ input DepartmentOrderByInput {
 input DepartmentUpdateInput {
   name: String
   specialists: SpecialistRelateToManyForUpdateInput
+  jobs: JobRelateToManyForUpdateInput
 }
 
 input SpecialistRelateToManyForUpdateInput {
@@ -409,6 +428,7 @@ input DepartmentUpdateArgs {
 input DepartmentCreateInput {
   name: String
   specialists: SpecialistRelateToManyForCreateInput
+  jobs: JobRelateToManyForCreateInput
 }
 
 input SpecialistRelateToManyForCreateInput {
