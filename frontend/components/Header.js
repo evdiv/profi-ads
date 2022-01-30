@@ -2,7 +2,7 @@ import Link from 'next/link';
 import TopNav from './TopNav';
 import Search from './Search';
 
-export default () => {
+export default function Header() {
     return(
         <>
             <div>

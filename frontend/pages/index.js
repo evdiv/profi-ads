@@ -1,38 +1,22 @@
-import { gql } from "@apollo/client";
-import client from "../helpers/apollo-client";
-import Link from "next/link";
+import PostList from "../components/PostList"
+import { initializeApollo, addApolloState } from '../lib/apolloClient'
+import { GET_ALL_POSTS } from "../lib/queries/getAllPosts"
 
-export default ({ data }) => {
+export default function IndexPage() {
   	return (
 		<div>
-			Main Page
-			{data.map(post => (
-				<p key={post.id}>
-					<Link href={`/posts/${post.id}`}>
-						<a>{post.title}</a>
-					</Link>
-				</p>
-			))}
+			<h2>Main Page</h2>
+			<PostList />
 		</div>
   	)
 }
 
-
 export const getStaticProps = async () => {
-	const { data } = await client.query({
-		query: gql`
-			query {
-				posts {
-					id,
-					title
-				}
-			}
-		`,
-	});
+	const apolloClient = initializeApollo()
 
-	return {
-		props: {
-			data: data.posts,
-		},
-	};
+	await apolloClient.query({query: GET_ALL_POSTS})
+
+	return addApolloState(apolloClient, {
+		props: {},
+	})
 }

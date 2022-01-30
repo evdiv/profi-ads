@@ -1,37 +1,22 @@
-import { useQuery, gql } from "@apollo/client"
-import Link from "next/link"
+import JobList from "../../components/JobList"
+import { initializeApollo, addApolloState } from '../../lib/apolloClient'
+import { GET_ALL_JOBS } from "../../lib/queries/getAllJobs"
 
-const ALL_JOBS = gql`
-        query ALL_JOBS_QUERY {
-            jobs {
-                id,
-                title,
-                publishedDate
-            }
-        }
-    `
-
-export default (props) => {
-    console.log(props)
-
-    const { data, error, loading } = useQuery(ALL_JOBS)
-
-    if(loading) return <p>Loading ...</p>
-    if(error) return <p>Error!</p>
-
+export default function JobListPage() {
     return (
         <div>
-            <p>Here will be the list of Departments to see available jobs</p>
-            <p>Props: {props.a}</p>
-            {data.jobs.map(job => (
-                <p key={job.id}><Link href={`/jobs/${job.id}`}>{job.title}</Link></p>
-            ))}
+            <h3>Available Jobs</h3>
+            <JobList />
         </div>
     )
 }
 
-export const getStaticProps = () => {
-    return {
-        props: { a: 9999}
-    }
+export const getStaticProps = async () => {
+    const apolloClient = initializeApollo()
+
+    await apolloClient.query({ query: GET_ALL_JOBS })
+
+    return addApolloState(apolloClient, {
+        props: {},
+    })
 }
