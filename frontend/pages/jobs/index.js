@@ -11,9 +11,9 @@ export default function JobListPage() {
     )
 }
 
-export const getStaticProps = async () => {
+export async function getServerSideProps() {
+    
     const apolloClient = initializeApollo()
-
     await apolloClient.query({ query: GET_ALL_JOBS })
 
     return addApolloState(apolloClient, {

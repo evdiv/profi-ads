@@ -11,9 +11,9 @@ export default function IndexPage() {
   	)
 }
 
-export const getStaticProps = async () => {
-	const apolloClient = initializeApollo()
+export async function getServerSideProps() {
 
+	const apolloClient = initializeApollo()
 	await apolloClient.query({query: GET_ALL_POSTS})
 
 	return addApolloState(apolloClient, {

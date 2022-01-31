@@ -1,11 +1,11 @@
-import Post from "../../components/Post"
+import Job from "../../components/Job"
 import { initializeApollo, addApolloState } from '../../lib/apolloClient'
-import { GET_POST_BY_ID } from "../../lib/queries/getPostById"
+import { GET_JOB_BY_ID } from "../../lib/queries/getJobById"
 
-export default function SinglePostPage({id}) {
+export default function SingleJobPage({id}) {
     return (
         <div>
-            <Post id={id}/>
+            <Job id={id}/>
         </div>
     )
 }
@@ -15,7 +15,7 @@ export async function getServerSideProps({ params }) {
     const apolloClient = initializeApollo()
 
     await apolloClient.query({ 
-        query: GET_POST_BY_ID,
+        query: GET_JOB_BY_ID,
         variables: {id}
     })
 
