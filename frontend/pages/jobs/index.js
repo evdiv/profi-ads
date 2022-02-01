@@ -1,6 +1,6 @@
 import JobList from "../../components/JobList"
 import { initializeApollo, addApolloState } from '../../lib/apolloClient'
-import { GET_ALL_JOBS } from "../../lib/queries/getAllJobs"
+import { GET_ALL_JOBS, initialVars } from "../../lib/queries/getAllJobs"
 
 export default function JobListPage() {
     return (
@@ -14,7 +14,7 @@ export default function JobListPage() {
 export async function getServerSideProps() {
     
     const apolloClient = initializeApollo()
-    await apolloClient.query({ query: GET_ALL_JOBS })
+    await apolloClient.query({ query: GET_ALL_JOBS, variables: initialVars })
 
     return addApolloState(apolloClient, {
         props: {},

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { GET_JOB_BY_ID } from "../lib/queries/getJobById"
 import { DocumentRenderer } from '@keystone-6/document-renderer';
 
-export default function Post({id}) {
+export default function Job({id}) {
     const { loading, error, data } = useQuery(GET_JOB_BY_ID, 
         {
             variables: { id }
