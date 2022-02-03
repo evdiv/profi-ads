@@ -2,7 +2,7 @@ import { useQuery, NetworkStatus } from '@apollo/client'
 import { GET_ALL_JOBS, initialVars} from '../lib/queries/getAllJobs'
 import Link from 'next/link';
 
-export default function JobList() {
+export default function JobList({page}) {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
         GET_ALL_JOBS, 
         { 
@@ -11,8 +11,14 @@ export default function JobList() {
         })
 
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
-    const { jobs, jobsCount } = data
-    const areMoreJobs = jobs.length < jobsCount  
+    
+    let { jobs, jobsCount } = data
+    let areMoreJobs = jobs.length < jobsCount
+
+   if (page === 'mainPage') {
+       jobs = jobs.slice(0, process.env.jobsPerPage)
+       areMoreJobs = false;
+   }
 
     const loadMoreJobs = () => {
         fetchMore({

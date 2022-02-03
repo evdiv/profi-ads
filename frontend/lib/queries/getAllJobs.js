@@ -13,5 +13,5 @@ export const GET_ALL_JOBS = gql`
 
 export const initialVars = {
     skip: 0,
-    take: 5,
+    take: process.env.jobsPerPage,
 }    
