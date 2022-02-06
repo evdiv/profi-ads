@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { SIGNIN_MUTATION } from "../lib/mutations/signIn";
+import { GET_AUTHENTICATED_USER } from "../lib/queries/getAuthenticatedUser";
 import { useState } from "react";
 
 export default function SignIn() {
@@ -11,6 +12,7 @@ export default function SignIn() {
 
     const [signin, { data }] = useMutation(SIGNIN_MUTATION, {
         variables: inputs,
+        refetchQueries: [{ query: GET_AUTHENTICATED_USER }],
     });
 
     function handleChange(e) {
@@ -23,9 +25,7 @@ export default function SignIn() {
 
     async function handleSubmit(e) {
         e.preventDefault(); 
-        console.log(inputs);
-        const res = await signin();
-        console.log(res);
+        await signin();
         setInputs(initial)
     }
 

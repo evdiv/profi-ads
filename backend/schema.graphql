@@ -220,7 +220,7 @@ input JobRelateToManyForCreateInput {
 type Job {
   id: ID!
   title: String
-  content: Job_content_Document
+  description: String
   publishedDate: DateTime
   user: User
   departments(
@@ -230,10 +230,6 @@ type Job {
     skip: Int! = 0
   ): [Department!]
   departmentsCount(where: DepartmentWhereInput! = {}): Int
-}
-
-type Job_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
 }
 
 input JobWhereUniqueInput {
@@ -246,6 +242,7 @@ input JobWhereInput {
   NOT: [JobWhereInput!]
   id: IDFilter
   title: StringFilter
+  description: StringFilter
   publishedDate: DateTimeNullableFilter
   user: UserWhereInput
   departments: DepartmentManyRelationFilter
@@ -260,12 +257,13 @@ input DepartmentManyRelationFilter {
 input JobOrderByInput {
   id: OrderDirection
   title: OrderDirection
+  description: OrderDirection
   publishedDate: OrderDirection
 }
 
 input JobUpdateInput {
   title: String
-  content: JSON
+  description: String
   publishedDate: DateTime
   user: UserRelateToOneForUpdateInput
   departments: DepartmentRelateToManyForUpdateInput
@@ -291,7 +289,7 @@ input JobUpdateArgs {
 
 input JobCreateInput {
   title: String
-  content: JSON
+  description: String
   publishedDate: DateTime
   user: UserRelateToOneForCreateInput
   departments: DepartmentRelateToManyForCreateInput

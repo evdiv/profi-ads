@@ -12,8 +12,15 @@ export const Department = list({
     },
     fields: {
         name: text({ validation: { isRequired: true } }),
-        specialists: relationship({ ref: 'Specialist.departments', many: true }),
-        jobs: relationship({ ref: 'Job.departments', many: true }),
+        specialists: relationship({ 
+            ref: 'Specialist.departments', 
+            many: true,
+        }),
+
+        jobs: relationship({ 
+            ref: 'Job.departments', 
+            many: true 
+        }),
     },
     ui: {
         listView: {

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useMutation } from "@apollo/client";
 import { SIGNUP_MUTATION } from '../lib/mutations/signUp'
+import { SIGNIN_MUTATION } from "../lib/mutations/signIn";
+import { GET_AUTHENTICATED_USER } from "../lib/queries/getAuthenticatedUser";
+
 
 export default function SignUp() {
     const initial = {
@@ -10,9 +13,13 @@ export default function SignUp() {
     }
     const [inputs, setInputs] = useState(initial);
 
-
     const [signup, { data, loading, error }] = useMutation(SIGNUP_MUTATION, {
         variables: inputs,
+    });
+
+    const [signin] = useMutation(SIGNIN_MUTATION, {
+        variables: inputs,
+        refetchQueries: [{ query: GET_AUTHENTICATED_USER }],
     });
 
     function handleChange(e) {
@@ -26,16 +33,21 @@ export default function SignUp() {
 
     async function handleSubmit(e) {
         e.preventDefault(); 
-        console.log(inputs);
-        const res = await signup().catch(console.error);
-        console.log(res);
-        console.log({ data, loading, error });
+        const signUpResult = await signup().catch(console.error);
+
+        if (signUpResult?.data?.createUser?.id){
+            await signin()
+        }
+
         setInputs(initial)
     }
 
     return (
         <form method="POST" onSubmit={handleSubmit}>
             <h2>Register Account</h2>
+            {error && <h3>Error</h3>}
+            {loading && <h3>Loading...</h3>}
+
             <label htmlFor="email">Your Name</label>
             <input
                 type="text"

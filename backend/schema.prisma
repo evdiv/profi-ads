@@ -29,7 +29,7 @@ model User {
 model Job {
   id            Int          @id @default(autoincrement())
   title         String       @default("")
-  content       Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  description   String       @default("")
   publishedDate DateTime?
   user          User?        @relation("Job_user", fields: [userId], references: [id])
   userId        Int?         @map("user")

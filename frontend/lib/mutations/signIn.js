@@ -9,7 +9,6 @@ export const SIGNIN_MUTATION = gql`
                     email
                     name
                 }
-                sessionToken
             }
             ... on UserAuthenticationWithPasswordFailure {
                 message
