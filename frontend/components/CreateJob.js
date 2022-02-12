@@ -11,6 +11,7 @@ export default function CreateJob() {
         departments: {connect: []},
     }
     const [inputs, setInputs] = useState(initial);
+    const [selectedDepartments, setDepartments] = useState([]);
     const departments = useDepartments()
 
     const [create, { data, loading, error }] = useMutation(CREATE_JOB_MUTATION, {
@@ -19,11 +20,12 @@ export default function CreateJob() {
 
     function handleChange(e) {
         let { value, name } = e.target;
+
         if (name === 'departments'){
-            setInputs({
-                ...inputs,
-                departments: { connect: [{ id: value }]}
-            });
+            let [selected] = departments.filter(dep => {
+                return dep.id === value
+            })
+            setDepartments([...new Set([...selectedDepartments, selected])]);
             return
         }
 
@@ -31,6 +33,10 @@ export default function CreateJob() {
             ...inputs,
             [name]: value,
         });
+    }
+
+    function removeSelectedDepartment(id) {
+        setDepartments(selectedDepartments.filter(dep => (dep.id !== id)));
     }
 
     async function handleSubmit(e) {
@@ -47,10 +53,21 @@ export default function CreateJob() {
             {loading && <h3>Loading...</h3>}
 
             <div>
+                <h4>Selected Departments</h4>
+                {selectedDepartments &&
+                    <ul>
+                        {selectedDepartments.map(dep => (
+                            <li key={dep.id} style={{cursor: 'pointer'}}
+                                onClick={() => { removeSelectedDepartment(dep.id) }}>{dep.name}</li>
+                        ))}
+                    </ul>
+                }
+            </div> 
+
+            <div>
                 <label htmlFor="title">Choose Department</label>
                 {departments && 
                     <select name="departments" onChange={handleChange}>
-                        <option disabled selected value>Select ...</option>
                         {departments.map(dep => (
                             <option key={dep.id} value={dep.id}>{dep.name}</option>
                         ))}

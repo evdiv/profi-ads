@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-export const GET_DEPARTMENTS_QUERY = gql`
+export const GET_DEPARTMENTS = gql`
         query GET_DEPARTMENTS_QUERY {
             departments {
                 id,

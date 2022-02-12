@@ -8,7 +8,7 @@ export default function Job({id}) {
         }
     )
 
-    if (error) return <div>Error loading posts.</div>
+    if (error) return <div>Error loading job.</div>
     if (loading) return <div>Loading</div>
 
     return (
