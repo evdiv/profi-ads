@@ -4,30 +4,35 @@ import { useDepartments } from "./useDepartments"
 import { CREATE_SPECIALIST_MUTATION } from '../lib/mutations/createSpecialist'
 
 
-export default function CreateSpecialist() {
+export default function CreateSpecialist({userId}) {
     const initial = {
         title: '',
         about: '',
-        departments: {connect: []},
     }
+
+    const allDepartments = useDepartments()
+
     const [inputs, setInputs] = useState(initial);
-    const [selectedDepartments, setDepartments] = useState([]);
-    const departments = useDepartments()
+    const [departments, setDepartments] = useState([])
 
     const [create, { data, loading, error }] = useMutation(CREATE_SPECIALIST_MUTATION, {
-        variables: inputs,
+        variables: {
+            title: inputs.title,
+            about: inputs.about,
+            user: { connect: { id: userId}},
+            departments: { connect: departments.map(dep => ({ id: dep.id })) }
+        },
     });
+
+    function handleChangeDepartments(e) {
+        let { value } = e.target;
+        let [department] = allDepartments.filter(dep => (dep.id === value))
+
+        setDepartments([...new Set([...departments, department])]);
+    }
 
     function handleChange(e) {
         let { value, name } = e.target;
-
-        if (name === 'departments'){
-            let [selected] = departments.filter(dep => {
-                return dep.id === value
-            })
-            setDepartments([...new Set([...selectedDepartments, selected])]);
-            return
-        }
 
         setInputs({
             ...inputs,
@@ -35,40 +40,42 @@ export default function CreateSpecialist() {
         });
     }
 
-    function removeSelectedDepartment(id) {
-        setDepartments(selectedDepartments.filter(dep => (dep.id !== id)));
+    function removeDepartment(id) {
+        setDepartments(departments.filter(dep => (dep.id !== id)));
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
+
         await create().catch(console.error);
 
         setInputs(initial)
+        setDepartments([])
     }
 
     return (
         <form method="POST" onSubmit={handleSubmit}>
-            <h2>Create Specialist</h2>
+            <h2>To respond please register as a Specialist</h2>
             {error && <h3>Error</h3>}
             {loading && <h3>Loading...</h3>}
 
             <div>
                 <h4>Selected Departments</h4>
-                {selectedDepartments &&
+                {departments &&
                     <ul>
-                        {selectedDepartments.map(dep => (
-                            <li key={dep.id} style={{cursor: 'pointer'}}
-                                onClick={() => { removeSelectedDepartment(dep.id) }}>{dep.name}</li>
+                        {departments.map(dep => (
+                            <li key={dep.id} style={{ cursor: 'pointer' }}
+                                onClick={() => { removeDepartment(dep.id) }}>{dep.name}</li>
                         ))}
                     </ul>
                 }
-            </div> 
+            </div>
 
             <div>
-                <label htmlFor="title">Choose Department</label>
-                {departments && 
-                    <select name="departments" onChange={handleChange}>
-                        {departments.map(dep => (
+                <label htmlFor="title">Select Departments</label>
+                {allDepartments &&
+                    <select name="departments" onChange={handleChangeDepartments}>
+                        {allDepartments.map(dep => (
                             <option key={dep.id} value={dep.id}>{dep.name}</option>
                         ))}
                     </select>
@@ -76,11 +83,11 @@ export default function CreateSpecialist() {
             </div>
 
             <div>
-                <label htmlFor="title">Your occupation</label>
+                <label htmlFor="title">Specialist Title</label>
                 <input
                     type="text"
                     name="title"
-                    placeholder="Enter Occupation Title"
+                    placeholder="Enter Job Title"
                     autoComplete="title"
                     value={inputs.title}
                     onChange={handleChange}
@@ -88,14 +95,14 @@ export default function CreateSpecialist() {
             </div>
 
             <div>
-                <label htmlFor="about">Write about yourself</label>
-                <textarea 
-                    name="about" 
+                <label htmlFor="description">About</label>
+                <textarea
+                    name="about"
                     onChange={handleChange}
-                    value={inputs.about}
+                    value={inputs.description}
                 />
             </div>
-            <button type="submit">Register as a Specialist</button>
+            <button type="submit">Add your occupation</button>
         </form>
     );
 }

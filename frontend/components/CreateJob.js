@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from "@apollo/client";
-import { useDepartments } from "../components/useDepartments"
+import { useDepartments } from "./useDepartments"
 import { CREATE_JOB_MUTATION } from '../lib/mutations/createJob'
 
 
@@ -8,26 +8,29 @@ export default function CreateJob() {
     const initial = {
         title: '',
         description: '',
-        departments: {connect: []},
     }
+
+    const allDepartments = useDepartments()
     const [inputs, setInputs] = useState(initial);
-    const [selectedDepartments, setDepartments] = useState([]);
-    const departments = useDepartments()
+    const [departments, setDepartments] = useState([])
 
     const [create, { data, loading, error }] = useMutation(CREATE_JOB_MUTATION, {
-        variables: inputs,
+        variables: {
+            title: inputs.title,
+            description: inputs.description,
+            departments: { connect: departments.map(dep => ({id: dep.id}))}
+        },
     });
+
+    function handleChangeDepartments(e) {
+        let { value } = e.target;
+        let [department] = allDepartments.filter(dep => (dep.id === value))
+
+        setDepartments([...new Set([...departments, department])]);
+    }
 
     function handleChange(e) {
         let { value, name } = e.target;
-
-        if (name === 'departments'){
-            let [selected] = departments.filter(dep => {
-                return dep.id === value
-            })
-            setDepartments([...new Set([...selectedDepartments, selected])]);
-            return
-        }
 
         setInputs({
             ...inputs,
@@ -35,15 +38,17 @@ export default function CreateJob() {
         });
     }
 
-    function removeSelectedDepartment(id) {
-        setDepartments(selectedDepartments.filter(dep => (dep.id !== id)));
+    function removeDepartment(id) {
+        setDepartments(departments.filter(dep => (dep.id !== id)));
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
+        
         await create().catch(console.error);
 
         setInputs(initial)
+        setDepartments([])
     }
 
     return (
@@ -54,21 +59,21 @@ export default function CreateJob() {
 
             <div>
                 <h4>Selected Departments</h4>
-                {selectedDepartments &&
+                {departments &&
                     <ul>
-                        {selectedDepartments.map(dep => (
+                        {departments.map(dep => (
                             <li key={dep.id} style={{cursor: 'pointer'}}
-                                onClick={() => { removeSelectedDepartment(dep.id) }}>{dep.name}</li>
+                                onClick={() => { removeDepartment(dep.id) }}>{dep.name}</li>
                         ))}
                     </ul>
                 }
             </div> 
 
             <div>
-                <label htmlFor="title">Choose Department</label>
-                {departments && 
-                    <select name="departments" onChange={handleChange}>
-                        {departments.map(dep => (
+                <label htmlFor="title">Select Departments</label>
+                {allDepartments && 
+                    <select name="departments" onChange={handleChangeDepartments}>
+                        {allDepartments.map(dep => (
                             <option key={dep.id} value={dep.id}>{dep.name}</option>
                         ))}
                     </select>

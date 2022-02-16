@@ -3,7 +3,7 @@ import SignOut from "./SignOut";
 import { useUser } from "./useUser";
 
 export default function TopNav() {
-    const user = useUser();
+    const user = useUser()
 
     return (
         <div>

@@ -41,7 +41,7 @@ model Job {
 model Specialist {
   id          Int          @id @default(autoincrement())
   title       String       @default("")
-  about       Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  about       String       @default("")
   user        User?        @relation("Specialist_user", fields: [userId], references: [id])
   userId      Int?         @unique @map("user")
   departments Department[] @relation("Department_specialists")

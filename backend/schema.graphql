@@ -308,7 +308,7 @@ input DepartmentRelateToManyForCreateInput {
 type Specialist {
   id: ID!
   title: String
-  about: Specialist_about_Document
+  about: String
   user: User
   departments(
     where: DepartmentWhereInput! = {}
@@ -317,10 +317,6 @@ type Specialist {
     skip: Int! = 0
   ): [Department!]
   departmentsCount(where: DepartmentWhereInput! = {}): Int
-}
-
-type Specialist_about_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
 }
 
 input SpecialistWhereUniqueInput {
@@ -333,6 +329,7 @@ input SpecialistWhereInput {
   NOT: [SpecialistWhereInput!]
   id: IDFilter
   title: StringFilter
+  about: StringFilter
   user: UserWhereInput
   departments: DepartmentManyRelationFilter
 }
@@ -340,11 +337,12 @@ input SpecialistWhereInput {
 input SpecialistOrderByInput {
   id: OrderDirection
   title: OrderDirection
+  about: OrderDirection
 }
 
 input SpecialistUpdateInput {
   title: String
-  about: JSON
+  about: String
   user: UserRelateToOneForUpdateInput
   departments: DepartmentRelateToManyForUpdateInput
 }
@@ -356,7 +354,7 @@ input SpecialistUpdateArgs {
 
 input SpecialistCreateInput {
   title: String
-  about: JSON
+  about: String
   user: UserRelateToOneForCreateInput
   departments: DepartmentRelateToManyForCreateInput
 }

@@ -15,16 +15,11 @@ export const Specialist = list({
 
     fields: {
         title: text({ validation: { isRequired: true }}),
-        about: document({
-            formatting: true,
-            layouts: [
-                [1, 1],
-                [1, 1, 1],
-                [2, 1],
-                [1, 2],
-                [1, 2, 1],
-            ],
-            dividers: true,
+
+        about: text({
+            ui: {
+                displayMode: 'textarea',
+            },
         }),
 
         user: relationship({ 
