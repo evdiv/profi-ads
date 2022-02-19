@@ -38,11 +38,6 @@ export const isCurrentSpecialist = ({ session, item }: ItemContext) => {
 };
 
 export const rules = {
-    canRespondToJobs: ({ session }: SessionContext) => {
-        if (!isSignedIn({ session })) return false
-        return isProfi({ session })
-    },
-
     canManageUser: ({ session, item }: ItemContext) => {
         if (isAdmin({ session })) return true
         return isCurrentUser({ session, item })

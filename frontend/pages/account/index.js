@@ -14,6 +14,7 @@ export default function MyAccountPage() {
                 </ul>
                 : 
                 <ul>
+                    <li><Link href="/account/jobs/">My Jobs</Link></li>
                     <li><Link href="/jobs/create">Create Job</Link></li>
                     <li><Link href="/account/signOut">Sign Out</Link> </li>
                 </ul>

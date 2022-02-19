@@ -1,24 +1,25 @@
 import { list } from '@keystone-6/core'
-import {text, relationship, timestamp,} from '@keystone-6/core/fields'
-import { isSignedIn, rules } from '../access'
+import {text, relationship, timestamp, checkbox} from '@keystone-6/core/fields'
+import { isProfi, rules } from '../access'
 import { getCurrentTimeStamp } from '../utils/time'
 
-export const Job = list({
+export const Response = list({
     access: {
         item: {
-            create: isSignedIn,
-            update: rules.canManageJob,
-            delete: rules.canManageJob
+            create: isProfi,
+            update: rules.canManageSpecialist,
+            delete: rules.canManageSpecialist
         },
     },
     fields: {
-        title: text({ validation: { isRequired: true } }),
-
         description: text({
+            validation: { isRequired: true },
             ui: {
                 displayMode: 'textarea',
             },
         }),
+
+        isAccepted: checkbox({}),
 
         publishedDate: timestamp({
             hooks: {
@@ -27,7 +28,7 @@ export const Job = list({
         }),    
 
         user: relationship({
-            ref: 'User.jobs',
+            ref: 'User.responses',
             many: false,
             hooks: {
                 resolveInput: ({ context, resolvedData }) => {
@@ -40,15 +41,9 @@ export const Job = list({
             },
         }),
         
-        departments: relationship({
-            ref: 'Department.jobs',
-            many: true,
+        job: relationship({
+            ref: 'Job.responses',
+            many: false,
         }),
-
-        responses: relationship({
-            ref: 'Response.job',
-            many: true,
-        }),
-
     },
 }) 

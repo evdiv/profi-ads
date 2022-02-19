@@ -1,7 +1,9 @@
-import Job from "../../components/Job"
 import { initializeApollo, addApolloState } from '../../lib/apolloClient'
+import Link from 'next/link';
 import { useUser } from "../../components/useUser";
+import Job from "../../components/Job"
 import CreateSpecialist from "../../components/CreateSpecialist"
+import CreateResponse from "../../components/CreateResponse";
 import { GET_JOB_BY_ID } from "../../lib/queries/getJobById"
 import { GET_DEPARTMENTS } from "../../lib/queries/getDepartments"
 
@@ -11,10 +13,10 @@ export default function SingleJobPage({id}) {
         <div>
             <Job id={id}/>
             {user?.occupation 
-                ? <div>Respond to Job</div> 
+                ? <CreateResponse jobId={id}/> 
                 : user?.id 
-                    ? <CreateSpecialist userId={user.id} />
-                    : <div>Please register</div>}
+                    ? <CreateSpecialist /> 
+                    : <div><Link href="/account/signIn">Sign In</Link> or <Link href="/account/register">Register</Link></div>}
         </div>
     )
 }

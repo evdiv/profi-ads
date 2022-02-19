@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useMutation } from "@apollo/client";
 import { useDepartments } from "./useDepartments"
 import { CREATE_SPECIALIST_MUTATION } from '../lib/mutations/createSpecialist'
+import { GET_AUTHENTICATED_USER } from "../lib/queries/getAuthenticatedUser";
 
-
-export default function CreateSpecialist({userId}) {
+export default function CreateSpecialist() {
     const initial = {
         title: '',
         about: '',
@@ -19,9 +19,9 @@ export default function CreateSpecialist({userId}) {
         variables: {
             title: inputs.title,
             about: inputs.about,
-            user: { connect: { id: userId}},
             departments: { connect: departments.map(dep => ({ id: dep.id })) }
         },
+        refetchQueries: [{ query: GET_AUTHENTICATED_USER }],
     });
 
     function handleChangeDepartments(e) {

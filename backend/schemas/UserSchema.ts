@@ -55,7 +55,12 @@ export const User = list({
         jobs: relationship({
             ref: 'Job.user',
             many: true,
-        })
+        }),
+
+        responses: relationship({
+            ref: 'Response.user',
+            many: true,
+        })        
     },
 
     ui: {
