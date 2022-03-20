@@ -2,7 +2,9 @@ module.exports = {
   reactStrictMode: true,
   env: {
     graphqlUrl: "http://localhost:3000/api/graphql",
-    postsPerPage: 5,
-    jobsPerPage: 5,
+    postsOnMainPage: 5,
+    jobsOnMainPage: 5,
+    postsPerPage: 10,
+    jobsPerPage: 10,
   },
 }

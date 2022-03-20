@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <div>
+        <div style={{backgroundColor: '#333', color: '#fff', marginTop: 30}}>
             Footer content
         </div>
     )

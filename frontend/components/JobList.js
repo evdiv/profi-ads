@@ -13,10 +13,11 @@ export default function JobList({page}) {
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
     
     let { jobs, jobsCount } = data
+
     let areMoreJobs = jobs.length < jobsCount
 
    if (page === 'mainPage') {
-       jobs = jobs.slice(0, process.env.jobsPerPage)
+       jobs = jobs.slice(0, process.env.jobsOnMainPage)
        areMoreJobs = false;
    }
 

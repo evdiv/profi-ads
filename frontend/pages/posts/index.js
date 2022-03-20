@@ -1,6 +1,6 @@
 import PostList from "../../components/PostList"
 import { initializeApollo, addApolloState } from '../../lib/apolloClient'
-import { GET_ALL_POSTS } from "../../lib/queries/getAllPosts"
+import { GET_ALL_POSTS, initialVars } from "../../lib/queries/getAllPosts"
 
 export default function PostListPage() {
     return (
@@ -14,7 +14,7 @@ export default function PostListPage() {
 export async function getServerSideProps() {
     
     const apolloClient = initializeApollo()
-    await apolloClient.query({ query: GET_ALL_POSTS })
+    await apolloClient.query({ query: GET_ALL_POSTS, variables: initialVars})
 
     return addApolloState(apolloClient, {
         props: {},

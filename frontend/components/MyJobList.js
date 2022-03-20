@@ -1,16 +1,23 @@
 import { useQuery, NetworkStatus } from '@apollo/client'
 import { GET_MY_JOBS, initialVars} from '../lib/queries/getMyJobs'
-import Link from 'next/link';
+import { useUser } from './useUser'
+import Link from 'next/link'
 
-export default function JobList() {
+export default function MyJobList() {
+    const user = useUser()
+    const variables = { ...initialVars, userId: user?.id ? user?.id : 0}
+
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
         GET_MY_JOBS, 
         { 
-            variables: initialVars,
+            variables,
             notifyOnNetworkStatusChange: true,
         })
 
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
+
+    if (error) return <div>Error loading your jobs.</div>
+    if (loading && !loadingMoreJobs) return <div>Loading</div>
     
     let { jobs, jobsCount } = data
     let areMoreJobs = jobs.length < jobsCount
@@ -23,9 +30,6 @@ export default function JobList() {
         })
     }  
 
-    if (error) return <div>Error loading jobs.</div>
-    if (loading && !loadingMoreJobs) return <div>Loading</div>
-
     return (
         <section>
             {jobs.map(job => (
@@ -37,7 +41,6 @@ export default function JobList() {
                     {loadingMoreJobs ? 'Loading...' : 'Show More'}
                 </button>
             )}
-
         </section>
     )
 }

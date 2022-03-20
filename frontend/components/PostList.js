@@ -15,7 +15,7 @@ export default function PostList({ page }) {
     let areMorePosts = posts.length < postsCount 
 
     if (page === 'mainPage') {
-        posts = posts.slice(0, process.env.postsPerPage)
+        posts = posts.slice(0, process.env.postsOnMainPage)
         areMorePosts = false;
     }
 

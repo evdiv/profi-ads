@@ -17,7 +17,9 @@ export default function DepartmentList({page}) {
                 </span>
             ))}
             {page === "mainPage" && 
-                <p>Total: {departmentsCount} <Link href="/departments/">See all</Link></p>
+                <span style={{ display: 'inline-block', margin: 12, backgroundColor: '#eee' }}> 
+                    <Link href="/departments/">See all...</Link>
+                </span>
             }
         </section>
     )

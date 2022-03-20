@@ -16,12 +16,12 @@ export const GET_MY_JOBS = gql`
                     publishedDate
                 }
             }
-            jobsCount
+            jobsCount(where: {user: {id: {equals: $userId}}})
         }
     `
 
 export const initialVars = {
-    userId: 13,
+    userId: 0,
     skip: 0,
     take: process.env.jobsPerPage,
 }    

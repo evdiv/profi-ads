@@ -5,7 +5,11 @@ export const GET_JOB_BY_ID = gql`
             job(where: {id: $id}) {
                 title,
                 description,
-                publishedDate
+                publishedDate,
+                departments {
+                    id,
+                    name
+                },
             }
         }
     `
