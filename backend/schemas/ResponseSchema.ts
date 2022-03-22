@@ -19,8 +19,6 @@ export const Response = list({
             },
         }),
 
-        isAccepted: checkbox({}),
-
         publishedDate: timestamp({
             hooks: {
                 resolveInput: getCurrentTimeStamp

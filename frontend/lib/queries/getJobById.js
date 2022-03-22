@@ -10,6 +10,10 @@ export const GET_JOB_BY_ID = gql`
                     id,
                     name
                 },
+                user {
+                    id,
+                    name
+                }
             }
         }
     `

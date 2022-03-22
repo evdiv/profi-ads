@@ -346,7 +346,6 @@ input DepartmentRelateToManyForCreateInput {
 type Response {
   id: ID!
   description: String
-  isAccepted: Boolean
   publishedDate: DateTime
   user: User
   job: Job
@@ -362,7 +361,6 @@ input ResponseWhereInput {
   NOT: [ResponseWhereInput!]
   id: IDFilter
   description: StringFilter
-  isAccepted: BooleanFilter
   publishedDate: DateTimeNullableFilter
   user: UserWhereInput
   job: JobWhereInput
@@ -371,13 +369,11 @@ input ResponseWhereInput {
 input ResponseOrderByInput {
   id: OrderDirection
   description: OrderDirection
-  isAccepted: OrderDirection
   publishedDate: OrderDirection
 }
 
 input ResponseUpdateInput {
   description: String
-  isAccepted: Boolean
   publishedDate: DateTime
   user: UserRelateToOneForUpdateInput
   job: JobRelateToOneForUpdateInput
@@ -396,7 +392,6 @@ input ResponseUpdateArgs {
 
 input ResponseCreateInput {
   description: String
-  isAccepted: Boolean
   publishedDate: DateTime
   user: UserRelateToOneForCreateInput
   job: JobRelateToOneForCreateInput
