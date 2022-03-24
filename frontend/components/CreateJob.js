@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useMutation } from "@apollo/client";
 import { useDepartments } from "./useDepartments"
 import { CREATE_JOB_MUTATION } from '../lib/mutations/createJob'
 
 
 export default function CreateJob() {
+    const router = useRouter()
     const initial = {
         title: '',
         description: '',
@@ -56,6 +58,7 @@ export default function CreateJob() {
             <h2>Create Job</h2>
             {error && <h3>Error</h3>}
             {loading && <h3>Loading...</h3>}
+            {data?.createJob.id && router.push('/account/jobs')}
 
             <div>
                 <h4>Selected Departments</h4>

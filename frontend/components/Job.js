@@ -18,7 +18,6 @@ export default function Job({id}) {
     if (error) return <div>Error loading job.</div>
     if (loading) return <div>Loading</div>
 
-
     return (
         <div>
             {data.job.departments.map(dep => (
@@ -29,7 +28,7 @@ export default function Job({id}) {
 
             <h4>{data.job.title}</h4>
             <p>{data.job.description}</p>
-            <p><i>Published by {data.job.user?.name} on {data.job.publishedDate}</i></p>
+            <p><i>Published by {data.job.user.name} on {data.job.publishedDate}</i></p>
 
             {user?.id === data.job.user.id 
                 ? <ResponsesList jobId={id} />

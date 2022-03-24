@@ -2,6 +2,7 @@ import { useQuery, NetworkStatus } from '@apollo/client'
 import { GET_JOB_RESPONSES, initialVars } from '../lib/queries/getJobResponses';
 
 export default function ResponseList({ jobId }) {
+
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
         GET_JOB_RESPONSES,
         {
@@ -10,24 +11,23 @@ export default function ResponseList({ jobId }) {
         })
 
     const loadingMoreResponses = networkStatus === NetworkStatus.fetchMore
-    let { responses, responsesCount } = data
-    let areMoreResponses = responses.length < responsesCount 
+    let areMoreResponses = data?.responses && data.responses.length < data.responsesCount ? true : false
 
     const loadMoreResponses = () => {
         fetchMore({
             variables: {
-                skip: responses.length,
+                skip: data.responses.length,
             },
         })
     }  
 
     if (error) return <div>Error loading responses.</div>
-    if (loading && !loadingMorePosts) return <div>Loading</div>
+    if (loading && !loadingMoreResponses) return <div>Loading</div>
 
     return (
         <section>
             <ul>
-                {data.responses.map((resp) => (
+                {data?.responses && data.responses.map((resp) => (
                     <li key={resp.id}>
                         {resp.description} added by {resp.user.name} on {resp.publishedDate}
                     </li>

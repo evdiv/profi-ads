@@ -11,7 +11,6 @@ export default function JobList({page}) {
         })
 
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
-    
     let { jobs, jobsCount } = data
 
     let areMoreJobs = jobs.length < jobsCount

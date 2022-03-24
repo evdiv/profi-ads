@@ -1,17 +1,17 @@
 import { gql } from "@apollo/client"
 
 export const GET_JOB_RESPONSES = gql`
-        query ALL_JOB_RESPONSES_QUERY($jobId: Int, $skip: Int = 0, $take: Int) {
+        query ALL_JOB_RESPONSES_QUERY($jobId: ID!, $skip: Int = 0, $take: Int) {
             responses(where: {job: {id: {equals: $jobId}}}, take: $take, skip: $skip) {
                 id,
                 description,
                 publishedDate,
-                user: {
+                user {
                     id,
-                    name
+                    name,
                 }
             }
-            responseCount(where:{job: {id: {equals: $jobId}}})
+            responsesCount(where:{job: {id: {equals: $jobId}}})
         }
     `
 
