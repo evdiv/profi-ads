@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { useUser } from "../../components/useUser";
+import SignOut from "../../components/SignOut";
 
 export default function MyAccountPage() {
     const user = useUser();
@@ -7,6 +8,8 @@ export default function MyAccountPage() {
     return (
         <div>
             <h3>Account Page</h3>
+            {user?.occupation && <h4>{user?.occupation.title}</h4>}
+
             {!user ? 
                 <ul>
                     <li><Link href="/account/register">Register Account</Link></li>
@@ -18,7 +21,7 @@ export default function MyAccountPage() {
                     <ul>
                         <li><Link href="/account/jobs/">My Jobs</Link></li>
                         <li><Link href="/jobs/create">Create Job</Link></li>
-                        <li><Link href="/account/signOut">Sign Out</Link> </li>
+                        <li><SignOut /></li>
                     </ul>
                 </div>
             }

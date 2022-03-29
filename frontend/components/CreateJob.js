@@ -47,19 +47,20 @@ export default function CreateJob() {
     async function handleSubmit(e) {
         e.preventDefault();
         
-        await create().catch(console.error);
+        await create()
 
         setInputs(initial)
         setDepartments([])
     }
 
+    if (error) return <div>Error loading your jobs.</div>
+    if (loading) return <div>Loading</div>
+
+    if (data?.CreateJob?.id) router.push('/account/jobs')
+
     return (
         <form method="POST" onSubmit={handleSubmit}>
             <h2>Create Job</h2>
-            {error && <h3>Error</h3>}
-            {loading && <h3>Loading...</h3>}
-            {data?.createJob.id && router.push('/account/jobs')}
-
             <div>
                 <h4>Selected Departments</h4>
                 {departments &&

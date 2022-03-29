@@ -15,11 +15,10 @@ export default function MyJobList() {
         })
 
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
-
-    if (error) return <div>Error loading your jobs.</div>
-    if (loading && !loadingMoreJobs) return <div>Loading</div>
     
-    let { jobs, jobsCount } = data
+    let jobs = data?.jobs ? data?.jobs : []
+    let jobsCount = data?.jobsCount ? data?.jobsCount : 0
+
     let areMoreJobs = jobs.length < jobsCount
 
     const loadMoreJobs = () => {
@@ -29,6 +28,9 @@ export default function MyJobList() {
             },
         })
     }  
+
+    if (error) return <div>Error loading your jobs.</div>
+    if (loading && !loadingMoreJobs) return <div>Loading</div>
 
     return (
         <section>
@@ -41,6 +43,7 @@ export default function MyJobList() {
                     {loadingMoreJobs ? 'Loading...' : 'Show More'}
                 </button>
             )}
+
         </section>
     )
 }

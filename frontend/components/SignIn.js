@@ -1,18 +1,9 @@
 import { useMutation } from "@apollo/client";
-import { useRouter } from 'next/router';
-import { useUser } from "./useUser";
 import { SIGNIN_MUTATION } from "../lib/mutations/signIn";
 import { GET_AUTHENTICATED_USER } from "../lib/queries/getAuthenticatedUser";
 import { useState } from "react";
 
 export default function SignIn() {
-    const user = useUser()
-    const router = useRouter()
-
-    if (user?.id){
-        router.push('/account')
-    }
-
     const initial = {
         email: '',
         password: '',
