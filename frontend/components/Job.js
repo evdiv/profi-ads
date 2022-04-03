@@ -30,13 +30,15 @@ export default function Job({id}) {
             <p>{data.job.description}</p>
             <p><i>Published by {data.job.user.name} on {data.job.publishedDate}</i></p>
 
-            {user?.id === data.job.user.id 
-                ? <ResponsesList jobId={id} />
-                : user?.occupation
-                    ? <CreateResponse jobId={id} />
-                    : user?.id
-                        ? <CreateSpecialist />
-                        : <div><Link href="/account/signIn">Sign In</Link> or <Link href="/account/register">Register</Link></div>}
+            {user?.occupation 
+                ?   <>
+                        <ResponsesList jobId={id} ownerId={data.job.user.id} />
+                        <CreateResponse jobId={id} />
+                    </>
+                : user?.id
+                    ? <CreateSpecialist />
+                    : <div><Link href="/account/signIn">Sign In</Link> or <Link href="/account/register">Register</Link></div>
+            }
 
         </div>
 

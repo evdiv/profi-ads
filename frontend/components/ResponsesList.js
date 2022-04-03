@@ -1,12 +1,14 @@
 import { useQuery, NetworkStatus } from '@apollo/client'
-import { GET_JOB_RESPONSES, initialVars } from '../lib/queries/getJobResponses';
+import { useUser } from './useUser'
+import { GET_RELEVANT_JOB_RESPONSES, initialVars } from '../lib/queries/getJobResponses';
 
-export default function ResponseList({ jobId }) {
+export default function ResponseList({ jobId, ownerId }) {
+    const user = useUser()
 
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        GET_JOB_RESPONSES,
+        GET_RELEVANT_JOB_RESPONSES,
         {
-            variables: {...initialVars, jobId },
+            variables: { ...initialVars, jobId, ownerId, profiId: user.id },
             notifyOnNetworkStatusChange: true,
         })
 
