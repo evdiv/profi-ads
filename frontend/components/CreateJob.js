@@ -56,7 +56,7 @@ export default function CreateJob() {
     if (error) return <div>Error loading your jobs.</div>
     if (loading) return <div>Loading</div>
 
-    if (data?.CreateJob?.id) router.push('/account/jobs')
+    if (data?.createJob?.id) router.push('/account/jobs')
 
     return (
         <form method="POST" onSubmit={handleSubmit}>

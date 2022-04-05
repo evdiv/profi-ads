@@ -1,18 +1,32 @@
-import { useQuery, NetworkStatus } from '@apollo/client'
+import { useState, useEffect } from 'react'
+import { useQuery, NetworkStatus, useMutation } from '@apollo/client'
 import { GET_MY_JOBS, initialVars} from '../lib/queries/getMyJobs'
+import { DELETE_JOB_MUTATION } from '../lib/mutations/deleteJob'
 import { useUser } from './useUser'
 import Link from 'next/link'
 
 export default function MyJobList() {
+    const [jobId, setJobId] = useState(0)
     const user = useUser()
     const variables = { ...initialVars, userId: user?.id ? user?.id : 0}
 
-    const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        GET_MY_JOBS, 
+    useEffect(() => {
+        if (parseInt(jobId) > 0){
+            deleteJob()
+        }
+
+    }, [jobId])
+
+    const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_MY_JOBS, 
         { 
             variables,
             notifyOnNetworkStatusChange: true,
         })
+
+    const [deleteJob] = useMutation(DELETE_JOB_MUTATION, {
+        variables: {jobId }, 
+        refetchQueries: [{ query: GET_MY_JOBS, variables }],
+    })
 
     const loadingMoreJobs = networkStatus === NetworkStatus.fetchMore 
     
@@ -35,7 +49,10 @@ export default function MyJobList() {
     return (
         <section>
             {jobs.map(job => (
-                <p key={job.id}><Link href={`/jobs/${job.id}`}>{job.title}</Link></p>
+                <p key={job.id}>
+                    <Link href={`/jobs/${job.id}`}>{job.title}</Link>
+                    <span onClick={() => setJobId(job.id)}>[X]</span>
+                </p>
             ))}
 
             {areMoreJobs && (
