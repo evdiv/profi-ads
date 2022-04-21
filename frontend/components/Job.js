@@ -4,7 +4,6 @@ import { GET_JOB_BY_ID } from "../lib/queries/getJobById"
 import { useUser } from "./useUser";
 import ResponsesList from "./ResponsesList"
 import CreateSpecialist from "./CreateSpecialist"
-import CreateResponse from "./CreateResponse";
 
 
 export default function Job({id}) {
@@ -30,17 +29,15 @@ export default function Job({id}) {
             <p>{data.job.description}</p>
             <p><i>Published by {data.job.user.name} on {data.job.publishedDate}</i></p>
 
+            {user?.id === data.job.user.id && <Link href="/jobs/edit">[Edit]</Link>}
+        
             {user?.occupation 
-                ?   <>
-                        <ResponsesList jobId={id} ownerId={data.job.user.id} />
-                        <CreateResponse jobId={id} />
-                    </>
+                ?   <ResponsesList jobId={id} ownerId={data.job.user.id} />
                 : user?.id
                     ? <CreateSpecialist />
                     : <div><Link href="/account/signIn">Sign In</Link> or <Link href="/account/register">Register</Link></div>
             }
 
         </div>
-
     )
 }

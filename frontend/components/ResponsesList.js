@@ -1,6 +1,7 @@
 import { useQuery, NetworkStatus } from '@apollo/client'
 import { useUser } from './useUser'
 import { GET_RELEVANT_JOB_RESPONSES, initialVars } from '../lib/queries/getJobResponses';
+import CreateResponse from './CreateResponse'
 
 export default function ResponseList({ jobId, ownerId }) {
     const user = useUser()
@@ -40,7 +41,7 @@ export default function ResponseList({ jobId, ownerId }) {
                     {loadingMoreResponses ? 'Loading...' : 'Show More'}
                 </button>
             )}
-
+            <CreateResponse jobId={jobId} />  
         </section>
     )
 }
