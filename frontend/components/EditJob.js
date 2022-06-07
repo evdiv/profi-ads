@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useMutation } from "@apollo/client";
+import { useQuery } from '@apollo/client'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { useMutation } from "@apollo/client"
 import { useDepartments } from "./useDepartments"
 import { GET_JOB_BY_ID } from "../lib/queries/getJobById"
 import { EDIT_JOB_MUTATION } from '../lib/mutations/editJob'
@@ -43,11 +44,11 @@ export default function EditJob({ id }) {
         let { value } = e.target;
         let [department] = allDepartments.filter(dep => (dep.id === value))
 
-        setDepartments([...new Set([...departments, department])]);
+        setDepartments([...new Set([...departments, department])])
     }
 
     function handleChange(e) {
-        let { value, name } = e.target;
+        let { value, name } = e.target
 
         setInputs({
             ...inputs,
@@ -56,18 +57,18 @@ export default function EditJob({ id }) {
     }
 
     function removeDepartment(id) {
-        setDepartments(departments.filter(dep => (dep.id !== id)));
+        setDepartments(departments.filter(dep => (dep.id !== id)))
     }
 
     async function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
         await edit()
     }
 
     if (editJob.error) return <div>Error updating the jobs.</div>
     if (editJob.loading) return <div>Loading</div>
 
-    if (data?.createJob?.id) router.push('/account/jobs')
+    if (editJob?.id) router.push('/account/jobs')
 
     return (
         <form method="POST" onSubmit={handleSubmit}>

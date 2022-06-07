@@ -29,7 +29,7 @@ export default function Job({id}) {
             <p>{data.job.description}</p>
             <p><i>Published by {data.job.user.name} on {data.job.publishedDate}</i></p>
 
-            {user?.id === data.job.user.id && <Link href="/jobs/edit">[Edit]</Link>}
+            {user?.id === data.job.user.id && <Link href={`/jobs/edit/${id}`}>[Edit]</Link>}
         
             {user?.occupation 
                 ?   <ResponsesList jobId={id} ownerId={data.job.user.id} />
