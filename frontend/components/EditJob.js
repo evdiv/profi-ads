@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
+import { useMutation } from "@apollo/client"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useMutation } from "@apollo/client"
 import { useDepartments } from "./useDepartments"
 import { GET_JOB_BY_ID } from "../lib/queries/getJobById"
 import { EDIT_JOB_MUTATION } from '../lib/mutations/editJob'
@@ -13,32 +13,37 @@ export default function EditJob({ id }) {
         description: '',
     }
 
-    const router = useRouter()
     const allDepartments = useDepartments()
-    const [inputs, setInputs] = useState(initial);
+    const [inputs, setInputs] = useState(initial)
     const [departments, setDepartments] = useState([])
+    const router = useRouter()
     
-    const job = useQuery(GET_JOB_BY_ID, {
+    const { data, refetch } = useQuery(GET_JOB_BY_ID, {
             variables: { id }
         }
     )
 
     const [edit, editJob] = useMutation(EDIT_JOB_MUTATION, {
         variables: {
-            id,
+            jobId: id,
             title: inputs.title,
             description: inputs.description,
-            departments: { connect: departments.map(dep => ({id: dep.id}))}
+            departments: { connect: departments.map(dep => ({ id: dep.id })) }
         },
     });
 
+
     useEffect(() => {
+        if(!data?.job){
+            return
+        }
         setInputs({
-            title: job.data.title,
-            description: job.data.description,
+            title: data.job.title,
+            description: data.job.description,
         })
         setDepartments(data.job.departments)
-    },[])
+    }, [data])
+
 
     function handleChangeDepartments(e) {
         let { value } = e.target;
@@ -63,16 +68,19 @@ export default function EditJob({ id }) {
     async function handleSubmit(e) {
         e.preventDefault()
         await edit()
+        refetch()
     }
+
+    if (editJob.data?.updateJob?.id) {
+        router.push(`/jobs/${editJob.data?.updateJob?.id}`)
+    } 
 
     if (editJob.error) return <div>Error updating the jobs.</div>
     if (editJob.loading) return <div>Loading</div>
 
-    if (editJob?.id) router.push('/account/jobs')
-
     return (
         <form method="POST" onSubmit={handleSubmit}>
-            <h2>Create Job</h2>
+            <h2>Edit Job</h2>
             <div>
                 <h4>Selected Departments</h4>
                 {departments &&
@@ -102,7 +110,6 @@ export default function EditJob({ id }) {
                     type="text"
                     name="title"
                     placeholder="Enter Job Title"
-                    autoComplete="title"
                     value={inputs.title}
                     onChange={handleChange}
                 />
@@ -111,12 +118,14 @@ export default function EditJob({ id }) {
             <div>
                 <label htmlFor="description">Job Description</label>
                 <textarea 
+                    rows="10"
+                    cols="50"
                     name="description" 
                     onChange={handleChange}
                     value={inputs.description}
                 />
             </div>
-            <button type="submit">Edit Job</button>
+            <button type="submit">Update Job</button>
         </form>
     );
 }

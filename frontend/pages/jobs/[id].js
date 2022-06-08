@@ -4,7 +4,6 @@ import { GET_JOB_BY_ID } from "../../lib/queries/getJobById"
 import { GET_DEPARTMENTS } from "../../lib/queries/getDepartments"
 
 export default function SingleJobPage({id}) {
-    console.log('id on the page: ' + id)
     return (
         <div>
             <Job id={id}/>
