@@ -72,7 +72,7 @@ export default function EditJob({ id }) {
     }
 
     if (editJob.data?.updateJob?.id) {
-        router.push(`/jobs/${editJob.data?.updateJob?.id}`)
+        router.push(`/jobs/${editJob.data?.updateJob?.id}?msg=updated`)
     } 
 
     if (editJob.error) return <div>Error updating the jobs.</div>

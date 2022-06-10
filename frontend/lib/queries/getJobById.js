@@ -13,6 +13,9 @@ export const GET_JOB_BY_ID = gql`
                 user {
                     id,
                     name
+                },
+                contractor {
+                    id
                 }
             }
         }

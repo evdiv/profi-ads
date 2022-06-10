@@ -56,7 +56,7 @@ export default function CreateJob() {
     if (error) return <div>Error loading your jobs.</div>
     if (loading) return <div>Loading</div>
 
-    if (data?.createJob?.id) router.push('/account/jobs')
+    if (data?.createJob?.id) router.push('/account/jobs?msg=created')
 
     return (
         <form method="POST" onSubmit={handleSubmit}>
@@ -99,6 +99,8 @@ export default function CreateJob() {
             <div>
                 <label htmlFor="description">Job Description</label>
                 <textarea 
+                    rows="10"
+                    cols="50"
                     name="description" 
                     onChange={handleChange}
                     value={inputs.description}

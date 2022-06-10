@@ -22,6 +22,7 @@ model User {
   occupation              Specialist? @relation("Specialist_user")
   jobs                    Job[]       @relation("Job_user")
   responses               Response[]  @relation("Response_user")
+  completedOrders         Job[]       @relation("Job_contractor")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -34,10 +35,13 @@ model Job {
   publishedDate DateTime?
   user          User?        @relation("Job_user", fields: [userId], references: [id])
   userId        Int?         @map("user")
+  contractor    User?        @relation("Job_contractor", fields: [contractorId], references: [id])
+  contractorId  Int?         @map("contractor")
   departments   Department[] @relation("Department_jobs")
   responses     Response[]   @relation("Response_job")
 
   @@index([userId])
+  @@index([contractorId])
 }
 
 model Response {

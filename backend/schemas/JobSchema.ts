@@ -39,7 +39,12 @@ export const Job = list({
                 }
             },
         }),
-        
+
+        contractor: relationship({
+            ref: 'User.completedOrders',
+            many: false,
+        }),
+
         departments: relationship({
             ref: 'Department.jobs',
             many: true,
@@ -49,6 +54,5 @@ export const Job = list({
             ref: 'Response.job',
             many: true,
         }),
-
     },
 }) 

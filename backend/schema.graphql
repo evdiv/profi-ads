@@ -30,6 +30,13 @@ type User {
     skip: Int! = 0
   ): [Response!]
   responsesCount(where: ResponseWhereInput! = {}): Int
+  completedOrders(
+    where: JobWhereInput! = {}
+    orderBy: [JobOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Job!]
+  completedOrdersCount(where: JobWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -60,6 +67,7 @@ input UserWhereInput {
   occupation: SpecialistWhereInput
   jobs: JobManyRelationFilter
   responses: ResponseManyRelationFilter
+  completedOrders: JobManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -173,6 +181,7 @@ input UserUpdateInput {
   occupation: SpecialistRelateToOneForUpdateInput
   jobs: JobRelateToManyForUpdateInput
   responses: ResponseRelateToManyForUpdateInput
+  completedOrders: JobRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -220,6 +229,7 @@ input UserCreateInput {
   occupation: SpecialistRelateToOneForCreateInput
   jobs: JobRelateToManyForCreateInput
   responses: ResponseRelateToManyForCreateInput
+  completedOrders: JobRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -251,6 +261,7 @@ type Job {
   description: String
   publishedDate: DateTime
   user: User
+  contractor: User
   departments(
     where: DepartmentWhereInput! = {}
     orderBy: [DepartmentOrderByInput!]! = []
@@ -280,6 +291,7 @@ input JobWhereInput {
   description: StringFilter
   publishedDate: DateTimeNullableFilter
   user: UserWhereInput
+  contractor: UserWhereInput
   departments: DepartmentManyRelationFilter
   responses: ResponseManyRelationFilter
 }
@@ -302,6 +314,7 @@ input JobUpdateInput {
   description: String
   publishedDate: DateTime
   user: UserRelateToOneForUpdateInput
+  contractor: UserRelateToOneForUpdateInput
   departments: DepartmentRelateToManyForUpdateInput
   responses: ResponseRelateToManyForUpdateInput
 }
@@ -329,6 +342,7 @@ input JobCreateInput {
   description: String
   publishedDate: DateTime
   user: UserRelateToOneForCreateInput
+  contractor: UserRelateToOneForCreateInput
   departments: DepartmentRelateToManyForCreateInput
   responses: ResponseRelateToManyForCreateInput
 }

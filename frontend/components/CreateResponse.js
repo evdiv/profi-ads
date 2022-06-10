@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { CREATE_RESPONSE_MUTATION } from '../lib/mutations/createResponse'
 
 
-export default function CreateResponse({jobId}) {
+export default function CreateResponse({jobId, isOwner, refetch}) {
     const initial = {
         description: '',
     }
@@ -28,8 +28,10 @@ export default function CreateResponse({jobId}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await create().catch(console.error);
+        await create().catch(console.error)
+        
         setInputs(initial)
+        refetch()
     }
 
     return (
@@ -37,12 +39,14 @@ export default function CreateResponse({jobId}) {
             {error && <h3>Error</h3>}
             <div>
                 <textarea 
+                    rows="10"
+                    cols="50"
                     name="description" 
                     onChange={handleChange}
                     value={inputs.description}
                 />
             </div>
-            <button type="submit">Respond to job</button>
+            <button type="submit">{isOwner ? 'Add Comment' : 'Respond to job'}</button>
         </form>
     );
 }

@@ -60,7 +60,12 @@ export const User = list({
         responses: relationship({
             ref: 'Response.user',
             many: true,
-        })        
+        }),
+        
+        completedOrders: relationship({
+            ref: 'Job.contractor',
+            many: true,
+        }),
     },
 
     ui: {

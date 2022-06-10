@@ -14,7 +14,6 @@ export default function MyJobList() {
         if (parseInt(jobId) > 0){
             deleteJob()
         }
-
     }, [jobId])
 
     const { loading, error, data, fetchMore, networkStatus } = useQuery(GET_MY_JOBS, 
@@ -51,7 +50,7 @@ export default function MyJobList() {
             {jobs.map(job => (
                 <p key={job.id}>
                     <Link href={`/jobs/${job.id}`}>{job.title}</Link>
-                    <span onClick={() => setJobId(job.id)}>[X]</span>
+                    <span onClick={() => setJobId(job.id)}> [Delete X] </span>
                 </p>
             ))}
 
@@ -60,7 +59,6 @@ export default function MyJobList() {
                     {loadingMoreJobs ? 'Loading...' : 'Show More'}
                 </button>
             )}
-
         </section>
     )
 }
